@@ -26,17 +26,22 @@ At high nonreciprocal activity, the system exhibits spontaneous time-reversal sy
 
 Compile the CUDA source code using `nvcc`. You must link both the Fast Fourier Transform and HDF5 libraries:
 
-`bash
-nvcc mainRK4.cu -O3 -lcufft -lhdf5 -o nrch_sim`
+`nvcc mainRK4.cu -O3 -lcufft -lhdf5 -o nrch_sim`
 
-## Note for HPC Users: If compiling on a cluster (e.g., ALCF Polaris), ensure the appropriate modules are loaded before compiling:
-`bash
-module load nvhpc
-module load cray-hdf5`
+or, on a system with a default value of C++ compilCarbon: 
+
+`nvcc main.cu -O3 -std=c++11 -lcufft -lhdf5 -o nrch_sim`
+and
+`nvcc mainRK4.cu -O3 -std=c++11 -lcufft -lhdf5 -o nrch_sim`
+
+## Note for HPC Users: If compiling on a cluster, ensure the appropriate modules are loaded before compiling:
+`
+`module load nvhpc
+module load hdf5`
 
 ## Configuration (Input.dat): The simulator reads configuration parameters via standard input. Create an Input.dat file in your working directory:
 
-# --- Grid & Time ---
+ --- Grid & Time ---
 nx 128
 ny 128
 dx 0.5
@@ -44,13 +49,13 @@ dt 0.1
 n_steps 10000
 seed 42
 
-# --- Output Controls ---
+ --- Output Controls ---
 log_interval 100
 field_interval 1000
 save_fields 1
 file_prefix run_alpha_45_
 
-# --- Model Parameters ---
+ --- Model Parameters ---
 kappa 0.01
 chi -0.2
 chi_prime 0.2
@@ -77,8 +82,7 @@ The program will periodically print progress and current free energy to stderr (
 
 ## Post-Processing & Video Generation: 
 Once the simulation completes, use the provided Python script to generate frames and stitch them into an MP4 video. Run the script with arguments matching your input file:
-`bash
-python postprocess.py --prefix run_alpha_45_ --fps 30 --video_name traveling_bands.mp4`
+`python postprocess.py --prefix run_alpha_45_ --fps 30 --video_name traveling_bands.mp4`
 
 Output Structuremetrics.log: Tab-separated values tracking Step, Time, Alpha, Free_Energy, RMS_Vorticity, and Domain_Size_R.*.h5: Highly compressed binary files containing the raw $\phi_1$ and $\phi_2$ arrays at each saved interval.frames/: Directory containing the rendered .png plots for each time step.*.mp4: The final animated visualization of the phase separation and traveling waves.
 
