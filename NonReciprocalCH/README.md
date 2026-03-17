@@ -1,12 +1,12 @@
 # NRCH-ETDRK4: 2D Nonreciprocal Cahn-Hilliard Simulator
 
-[cite_start]A high-performance, GPU-accelerated simulator for the Nonreciprocal Cahn-Hilliard (NRCH) model[cite: 2, 50]. [cite_start]This code simulates pattern formation in scalar active mixtures where pair interactions do not follow Newton's third law[cite: 5].
+A high-performance, GPU-accelerated simulator for the Nonreciprocal Cahn-Hilliard (NRCH) model. This code simulates pattern formation in scalar active mixtures where pair interactions do not follow Newton's third law.
 
-[cite_start]At high nonreciprocal activity, the system exhibits spontaneous time-reversal symmetry breaking, leading to the formation of traveling density waves (an active self-propelled smectic phase) or 2D moving micropatterns[cite: 8, 9, 10].
+At high nonreciprocal activity, the system exhibits spontaneous time-reversal symmetry breaking, leading to the formation of traveling density waves (an active self-propelled smectic phase) or 2D moving micropatterns.
 
 ## Features
-* [cite_start]**CUDA-Accelerated Pseudo-Spectral Solver:** Evaluates spatial derivatives exactly in Fourier space using `cuFFT`[cite: 644, 645].
-* [cite_start]**4th-Order ETD Runge-Kutta (ETDRK4):** Treats the stiff fourth-order surface tension terms exactly via Exponential Time Differencing, avoiding the crippling $\Delta t$ constraints of explicit explicit Euler methods[cite: 652, 653]. Coefficients are computed robustly on the host via Cauchy contour integration.
+* **CUDA-Accelerated Pseudo-Spectral Solver:** Evaluates spatial derivatives exactly in Fourier space using `cuFFT`[cite: 644, 645].
+* **4th-Order ETD Runge-Kutta (ETDRK4):** Treats the stiff fourth-order surface tension terms exactly via Exponential Time Differencing, avoiding the crippling $\Delta t$ constraints of explicit explicit Euler methods[cite: 652, 653]. Coefficients are computed robustly on the host via Cauchy contour integration.
 * **HDF5 I/O:** High-speed, highly compressed binary output of the 2D scalar fields directly from the GPU.
 * **Dynamic Driving:** Supports linear time-dependent ramping of model parameters (e.g., activity $\alpha$) during the simulation.
 * **Automated Post-Processing:** Python pipeline to instantly render 4-panel diagnostic visualizations (Species 1, Species 2, Modulus, Phase) and encode them into an MP4 video.
@@ -27,7 +27,7 @@
 Compile the CUDA source code using `nvcc`. You must link both the Fast Fourier Transform and HDF5 libraries:
 
 ```bash
-nvcc mainRK4.cu -O3 -lcufft -lhdf5 -o nrch_sim
+nvcc mainRK4.cu -O3 -lcufft -lhdf5 -o nrch_sim```
 
 
 
