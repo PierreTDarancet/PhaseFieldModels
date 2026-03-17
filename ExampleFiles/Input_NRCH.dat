@@ -1,0 +1,31 @@
+# --- Grid & Time ---
+nx 128
+ny 128
+dx 0.5
+dt 0.1
+n_steps 10000
+seed 42
+
+# --- Output Controls ---
+log_interval 100
+field_interval 1000
+save_fields 1
+file_prefix run_alpha_45_
+
+# --- Model Parameters ---
+kappa 0.01
+chi -0.2
+chi_prime 0.2
+
+# --- Time-Dependent Driving (Linear Ramp) ---
+alpha_start 0.0
+alpha_end 0.45
+c11_start 0.2
+c11_end 0.2
+c12_start 0.5
+c12_end 0.5
+c21_start 0.1
+c21_end 0.1
+c22_start 0.5
+c22_end 0.5
+
