@@ -72,6 +72,7 @@ c21_end 0.1
 c22_start 0.5
 c22_end 0.5
 
+<img width="949" height="410" alt="image" src="https://github.com/user-attachments/assets/a1cb4066-f988-4a95-9c70-3e43389b99e2" />
 
 
 ## Running the Simulation: Execute the compiled binary, piping the input file in and redirecting the scalar diagnostic output (Free Energy, Vorticity, Domain Size) to a log file:
