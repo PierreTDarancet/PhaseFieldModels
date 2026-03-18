@@ -48,7 +48,7 @@ for file in files:
     plt.suptitle(f"NRCH Simulation | Step {step}")
     plt.tight_layout()
     
-    out_name = f"frames/frame_{step:10d}.png"
+    out_name = f"frames/frame_{step:010d}.png"
     plt.savefig(out_name, dpi=150)
     plt.close(fig)
     print(f"Rendered {out_name}")
