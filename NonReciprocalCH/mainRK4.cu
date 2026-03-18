@@ -587,7 +587,7 @@ int main() {
 
             if (do_field) {
                 char filename[256];
-                sprintf(filename, "%s%05d.h5", prefix.c_str(), step);
+                sprintf(filename, "%s%08d.h5", prefix.c_str(), step);
 
                 hid_t file_id = H5Fcreate(filename, H5F_ACC_TRUNC,
                                           H5P_DEFAULT, H5P_DEFAULT);
