@@ -95,19 +95,17 @@ __global__ void calc_nonlinear_no_overwrite(
 }
 
 // Multiply nonlinear term by -q^2 in Fourier space (Cahn-Hilliard Laplacian)
+// Change apply_laplacian to use 1D linear indexing
 __global__ void apply_laplacian(cufftDoubleComplex* N_hat, const double* q2,
-                                int nx, int ny) {
-    int ix = blockIdx.x * blockDim.x + threadIdx.x;
-    int iy = blockIdx.y * blockDim.y + threadIdx.y;
-    if (ix < nx && iy < ny) {
-        int i = iy * nx + ix;
+                                int N_total) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < N_total) {
         double mq2 = -q2[i];
-        double re = N_hat[i].x * mq2;
-        double im = N_hat[i].y * mq2;
-        N_hat[i].x = re;
-        N_hat[i].y = im;
+        N_hat[i].x *= mq2;
+        N_hat[i].y *= mq2;
     }
 }
+
 
 // ETDRK4 Stage a:  a_hat = E2 * u_hat + E2_1 * Na_hat
 __global__ void etdrk4_stage_a(
@@ -325,10 +323,14 @@ void compute_N_hat(
     cufftExecZ2Z(plan, d_N1, d_N1_hat, CUFFT_FORWARD);
     cufftExecZ2Z(plan, d_N2, d_N2_hat, CUFFT_FORWARD);
 
-    // Apply -q^2 (Cahn-Hilliard Laplacian in Fourier space)
+    //  -q^2 (Cahn-Hilliard Laplacian in Fourier space)
     int blocks1d = (N_total + threads1d_block - 1) / threads1d_block;
-    apply_laplacian<<<blocks1d, threads1d_block>>>(d_N1_hat, d_q2, nx, ny);
-    apply_laplacian<<<blocks1d, threads1d_block>>>(d_N2_hat, d_q2, nx, ny);
+    // Corrected as it was written with 2D indexing (ix, iy), but was launched with a 1D grid
+    // apply_laplacian<<<blocks1d, threads1d_block>>>(d_N1_hat, d_q2, nx, ny);
+    // apply_laplacian<<<blocks1d, threads1d_block>>>(d_N2_hat, d_q2, nx, ny);
+    apply_laplacian<<<blocks1d, threads1d>>>(d_N1_hat, d_q2, N);
+    apply_laplacian<<<blocks1d, threads1d>>>(d_N2_hat, d_q2, N);
+
 }
 
 // ============================================================
